@@ -18,3 +18,5 @@ Notes:
 - Implemented in JavaScript
 - Takes integer input through a form
 - Prints output to a &lt;pre&gt; element
+- Watch the spiral grow outward: press "Start Printing Test"
+- Enter a negative integer and the spiral goes in the opposite direction

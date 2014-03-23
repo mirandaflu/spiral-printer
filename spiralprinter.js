@@ -40,17 +40,22 @@ var spiral = {
     },
     
     'create': function(integer) {
-        this.init();
-        this.maxdigits = integer.toString().length;
-        for (var i = 1; i <= integer; ++i) {
-            this.insert(i);
+        if (isNaN(parseInt(integer)) || parseFloat(integer) != parseInt(integer)) {
+            alert('Please enter an integer');
         }
-        this.print();
+        else {
+            this.init();
+            this.maxdigits = integer.toString().length;
+            for (var i = 1; i <= integer; ++i) {
+                this.insert(i);
+            }
+            this.print();
+        }
     },
     
     'test': function() {
         var i = 1;
-        this.timer = setInterval(function() { console.log(this.create(i)); ++i; }.bind(this), 300);
+        this.timer = setInterval(function() { this.create(i); ++i; }.bind(this), 300);
         document.getElementById('testtoggle').innerHTML = 'Stop Printing Test';
         document.getElementById('testtoggle').onclick = function() { spiral.stoptest(); };
     },

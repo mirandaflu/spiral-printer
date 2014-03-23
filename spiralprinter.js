@@ -1,13 +1,15 @@
 var spiral = {
     
-    'init': function() {
+    'init': function(negative) {
+        this.next_direction = (negative)? this.counterclockwise: this.clockwise;
+        this.increment = (negative)? -1: 1;
         this.data = {
             '0': {
                 '0': '0'
             }
         };
         this.location = {
-            'x': 1,
+            'x': this.increment,
             'y': 0
         };
         this.direction = {
@@ -16,10 +18,17 @@ var spiral = {
         };
     },
     
-    'next_direction': function() {
+    'clockwise': function() {
         // cycles [1,0] -> [0,1] -> [-1,0] -> [0,-1]
-        var new_x = (this.direction.x !== 0)? 0: (this.direction.y > 0)? -1: 1;
-        var new_y = (this.direction.y !== 0)? 0: (this.direction.x < 0)? -1: 1;
+        var new_x = (this.direction.x !== 0)? 0: -this.direction.y;
+        var new_y = (this.direction.y !== 0)? 0: this.direction.x;
+        return {'x': new_x, 'y': new_y};
+    },
+    
+    'counterclockwise': function() {
+        // cycles [1,0] -> [0,-1] -> [-1,0] -> [0,1]
+        var new_x = (this.direction.x !== 0)? 0: this.direction.y;
+        var new_y = (this.direction.y !== 0)? 0: -this.direction.x;
         return {'x': new_x, 'y': new_y};
     },
     
@@ -30,7 +39,8 @@ var spiral = {
         this.data[this.location.y][this.location.x] = insertee.toString();
         
         //change direction if the next direction is clear
-        if ((typeof(this.data[this.location.y+this.next_direction().y]) == 'undefined') || (typeof(this.data[this.location.y+this.next_direction().y][this.location.x+this.next_direction().x]) == 'undefined'))
+        if ((typeof(this.data[this.location.y+this.next_direction().y]) == 'undefined') ||
+            (typeof(this.data[this.location.y+this.next_direction().y][this.location.x+this.next_direction().x]) == 'undefined'))
             this.direction = this.next_direction();
         
         //update location
@@ -44,10 +54,10 @@ var spiral = {
             alert('Please enter an integer');
         }
         else {
-            this.init();
+            this.init(parseInt(integer) < 0);
             this.maxdigits = integer.toString().length;
-            for (var i = 1; i <= integer; ++i) {
-                this.insert(i);
+            for (var i = 0; Math.abs(i-integer) !== 0; i += this.increment) {
+                this.insert(i+this.increment);
             }
             this.print();
         }

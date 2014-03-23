@@ -48,6 +48,19 @@ var spiral = {
         this.print();
     },
     
+    'test': function() {
+        var i = 1;
+        this.timer = setInterval(function() { console.log(this.create(i)); ++i; }.bind(this), 300);
+        document.getElementById('testtoggle').innerHTML = 'Stop Printing Test';
+        document.getElementById('testtoggle').onclick = function() { spiral.stoptest(); };
+    },
+    
+    'stoptest': function() {
+        if (typeof(this.timer) != 'undefined') clearInterval(this.timer);
+        document.getElementById('testtoggle').innerHTML = 'Start Printing Test';
+        document.getElementById('testtoggle').onclick = function() { spiral.test(); };
+    },
+    
     'print': function() {
         
         //insert spaces until you hit a corner
@@ -87,4 +100,3 @@ var spiral = {
     }
     
 };
-
